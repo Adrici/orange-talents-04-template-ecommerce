@@ -3,7 +3,6 @@ package br.com.zup.mercado.livre.ecommerce.usuario;
 import io.jsonwebtoken.lang.Assert;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.util.StringUtils;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,17 +17,13 @@ import java.time.LocalDateTime;
 @Entity
 public class UsuarioModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
-    @Email
+    @NotBlank @Email
     private String login;
-    @NotBlank
-    @Size(min = 6)
+    @NotBlank @Size(min = 6)
     private String senha;
-    @NotNull
-    @CreationTimestamp
+    @NotNull @CreationTimestamp
     private LocalDateTime instanteCadastro = LocalDateTime.now();
 
 
