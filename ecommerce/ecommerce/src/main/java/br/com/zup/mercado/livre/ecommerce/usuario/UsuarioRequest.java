@@ -15,7 +15,6 @@ public class UsuarioRequest {
     private String senha;
 
     public UsuarioRequest(@NotBlank @Email String login, @NotBlank @Size(min = 6) String senha) {
-        super();
         this.login = login;
         this.senha = senha;
     }
