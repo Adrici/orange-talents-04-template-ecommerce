@@ -1,6 +1,5 @@
 package br.com.zup.mercado.livre.ecommerce.security;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,15 +9,16 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfiguration {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private AuthService authService;
 
@@ -51,5 +51,4 @@ public class SecurityConfiguration extends WebSecurityConfiguration {
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
     }
-
 }

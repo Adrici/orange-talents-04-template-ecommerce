@@ -5,9 +5,10 @@ import br.com.zup.mercado.livre.ecommerce.usuario.UsuarioRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Optional;
