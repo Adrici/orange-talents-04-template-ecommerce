@@ -28,4 +28,7 @@ public class Caracteristica {
         this.produto = produto;
     }
 
+    @Deprecated
+    public Caracteristica() {
+    }
 }

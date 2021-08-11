@@ -19,6 +19,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import br.com.zup.mercado.livre.ecommerce.categorias.CategoriaModel;
+import br.com.zup.mercado.livre.ecommerce.produto.imagem.ImagemModel;
 import br.com.zup.mercado.livre.ecommerce.usuario.UsuarioModel;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
@@ -51,9 +52,14 @@ public class ProdutoModel {
     @NotNull
     @ManyToOne
     private UsuarioModel dono;
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST)
-    //cascade = CascadeType.PERSIST: sempre que cadastrar um produto, pode registrar as características junto
+
+    @Size(min = 3)
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST) //cascade = CascadeType.PERSIST: sempre que cadastrar um produto, pode registrar as características junto
     private Set<Caracteristica> caracteristicas = new HashSet<>();
+
+    //cascade = CascadeType.MERGE: atualiza ambos
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<ImagemModel> imagens = new HashSet<>();
 
     public ProdutoModel(@NotBlank String nome, @Positive BigDecimal valor, @Positive Integer quantidade,
                         @NotBlank @Length(max = 1000) String descricao, CategoriaModel categoria, UsuarioModel dono,
@@ -71,65 +77,42 @@ public class ProdutoModel {
         Assert.isTrue(this.caracteristicas.size() >= 3, "Todo produto precisa ter no minomo 3 características");
     }
 
-
+    @Deprecated
     public ProdutoModel() {
     }
 
     public Long getId() {
         return id;
     }
-
     public String getNome() {
         return nome;
     }
-
     public BigDecimal getValor() {
         return valor;
     }
-
     public Integer getQuantidade() {
         return quantidade;
     }
-
     public String getDescricao() {
         return descricao;
     }
-
     public CategoriaModel getCategoria() {
         return categoria;
     }
-
     public UsuarioModel getDono() {
         return dono;
     }
-
     public LocalDateTime getInstanteCadastro() {
         return instanteCadastro;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-        return result;
+    public void associaImagens(Set<String> links) {
+        Set<ImagemModel> imagens = links.stream().map(link -> new ImagemModel(this, link)).collect(Collectors.toSet());
+        this.imagens.addAll(imagens);
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ProdutoModel other = (ProdutoModel) obj;
-        if (nome == null) {
-            if (other.nome != null)
-                return false;
-        } else if (!nome.equals(other.nome))
-            return false;
-        return true;
+    public boolean pertenceAoUsuario(UsuarioModel possivelDono) {
+        return this.dono.equals(possivelDono);
     }
 
 }
