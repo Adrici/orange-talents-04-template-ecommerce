@@ -1,7 +1,9 @@
-package br.com.zup.mercado.livre.ecommerce.produto;
+package br.com.zup.mercado.livre.ecommerce.produto.caracterisrica;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+
+import br.com.zup.mercado.livre.ecommerce.produto.ProdutoModel;
 import com.sun.istack.NotNull;
 
 

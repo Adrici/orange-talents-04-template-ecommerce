@@ -1,4 +1,6 @@
-package br.com.zup.mercado.livre.ecommerce.produto;
+package br.com.zup.mercado.livre.ecommerce.produto.caracterisrica;
+
+import br.com.zup.mercado.livre.ecommerce.produto.ProdutoModel;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,4 +33,21 @@ public class Caracteristica {
     @Deprecated
     public Caracteristica() {
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public ProdutoModel  getProduto() {
+        return produto;
+    }
+
 }

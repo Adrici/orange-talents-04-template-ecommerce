@@ -91,4 +91,10 @@ public class ProdutoController {
         return ResponseEntity.ok(new PerguntaResponse(pergunta));
     }
 
+    @GetMapping("/{id}")
+    public ProdutoDetalheResponse consultarProduto(@PathVariable("id") Long id) {
+        ProdutoModel produto = manager.find(ProdutoModel.class, id);
+        return new ProdutoDetalheResponse(produto);
+    }
+
 }

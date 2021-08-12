@@ -1,6 +1,7 @@
 package br.com.zup.mercado.livre.ecommerce.produto;
 
 import br.com.zup.mercado.livre.ecommerce.categorias.CategoriaModel;
+import br.com.zup.mercado.livre.ecommerce.produto.caracterisrica.CaracteristicaRequest;
 import br.com.zup.mercado.livre.ecommerce.usuario.UsuarioModel;
 import br.com.zup.mercado.livre.ecommerce.utils.ExistsValue;
 import br.com.zup.mercado.livre.ecommerce.utils.UniqueValue;
