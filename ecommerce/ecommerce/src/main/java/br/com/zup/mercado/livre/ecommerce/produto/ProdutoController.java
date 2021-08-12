@@ -5,8 +5,12 @@ import br.com.zup.mercado.livre.ecommerce.produto.imagem.Uploader;
 import br.com.zup.mercado.livre.ecommerce.produto.opiniao.OpiniaoModel;
 import br.com.zup.mercado.livre.ecommerce.produto.opiniao.OpiniaoRequest;
 import br.com.zup.mercado.livre.ecommerce.produto.opiniao.OpiniaoResponse;
+import br.com.zup.mercado.livre.ecommerce.produto.pergunta.PerguntaModel;
+import br.com.zup.mercado.livre.ecommerce.produto.pergunta.PerguntaRequest;
+import br.com.zup.mercado.livre.ecommerce.produto.pergunta.PerguntaResponse;
 import br.com.zup.mercado.livre.ecommerce.usuario.UsuarioModel;
 import br.com.zup.mercado.livre.ecommerce.usuario.UsuarioRepository;
+import br.com.zup.mercado.livre.ecommerce.utils.email.EnviarEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +36,9 @@ public class ProdutoController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private EnviarEmail emails;
+
     @InitBinder(value = "produtoRequest")
     public void init(WebDataBinder webDataBinder){
         webDataBinder.addValidators(new ProibeCaracteristicasComNomeIgualValidator());
@@ -49,13 +56,6 @@ public class ProdutoController {
     @PostMapping(value = "/{id}/imagens")
     @Transactional
     public void cadastrarImagens(@PathVariable Long id, @Valid ImagemRequest request) {
-        /**
-         * 1) enviar imagens para o local onde elas vão ficar
-         * 2) pegar os links de todas as imagens
-         * 3) associar esses links com o produto em questão
-         * 4) carregar o produto
-         * 5) depois que associar, preciso atualizar a nova versão do produto
-         */
         UsuarioModel dono = usuarioRepository.findByLogin("adriana@email.com").get();
         ProdutoModel produto = manager.find(ProdutoModel.class, id);
 
@@ -76,6 +76,19 @@ public class ProdutoController {
         manager.persist(opiniao);
 
         return ResponseEntity.ok(new OpiniaoResponse(opiniao));
+    }
+
+    @PostMapping(value = "/{id}/perguntas")
+    @Transactional
+    public ResponseEntity<PerguntaResponse> adicionarPergunta(@PathVariable Long id, @RequestBody @Valid PerguntaRequest request) {
+        UsuarioModel usuarioLogado = usuarioRepository.findByLogin("jonathan@email.com").get();
+        ProdutoModel produto = manager.find(ProdutoModel.class, id);
+        PerguntaModel pergunta = request.toModel(usuarioLogado, produto);
+        manager.persist(pergunta);
+
+        emails.novaPergunta(pergunta);
+
+        return ResponseEntity.ok(new PerguntaResponse(pergunta));
     }
 
 }
